@@ -1,2 +1,40 @@
-
-
+{
+    "name": "LCU",
+    "description": "Cleans stuff up",
+    "version": "0.0.1",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "run_at": "document_idle",
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "ui.html",
+        "default_icon": {
+            "16": "/images/lcr_16.png",
+            "32": "/images/lcr_32.png",
+            "48": "/images/lcr_48.png",
+            "128": "/images/lcr_128.png"
+        }
+    },
+    "icons": {
+        "16": "/images/lcr_16.png",
+        "32": "/images/lcr_32.png",
+        "48": "/images/lcr_48.png",
+        "128": "/images/lcr_128.png"
+    }
+}
