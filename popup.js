@@ -28,7 +28,9 @@ function fixUp() {
 
     /*
     Creating a standard order - For cut off tables
-    TODO: STiCKY HEADERS and GLASS PANE / SAVE AND CLOSE/ TABLES / element.style / Widget Removal
+    TODO: STiCKY HEADERS / SAVE AND CLOSE/ TABLES / element.style / Check tips and trick board
+    Step 3s tabs and white bar
+    More tables
     */
     
     targetIFrame = window.top.document.querySelector('div > iframe[class="tutorial-practice__iframe"]').contentWindow;
