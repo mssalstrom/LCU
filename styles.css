@@ -1,14 +1,20 @@
-button {
-    height: 25px;
-    width: 75px;
-    outline: black;
-    outline-style: groove;
-    margin: 1px;
-    border: blue;
-    border-radius: 2px;
-    text-align: center;
-    align-self: center;
-    /* background-image: url("../../images/trash_128.png") */
+.button {
+    background-color: DodgerBlue;
+    /* Blue background */
+    border: black;
+    color:black;
+    /* White text */
+    padding: 12px 16px;
+    /* Some padding */
+    font-size: 14px;
+    /* Set a font size */
+    cursor: pointer;
+    /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.button:hover {
+    background-color: RoyalBlue;
 }
 
 h1 {
@@ -17,7 +23,7 @@ h1 {
 }
 
 body {
-    background-image: url("../../images/lcr_128.png");
+    background-color:aqua;
     align-items: center;
 }
 
