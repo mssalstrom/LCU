@@ -28,20 +28,27 @@ function fixUp() {
 
     /*
     Creating a standard order - For cut off tables
-    TODO: STiCKY HEADERS / SAVE AND CLOSE/ TABLES / element.style / Check tips and trick board
-    Step 3s tabs and white bar
+    TODO: STiCKY HEADERS / TABLES / element.style / Check tips and trick board
+    Text wrap for save and close buttons
     More tables
+    CHECK: Modifying installments
     */
-    
+
     targetIFrame = window.top.document.querySelector('div > iframe[class="tutorial-practice__iframe"]').contentWindow;
 
     // Removes iFrame dots
     const iFrames = targetIFrame.document.querySelectorAll('[id="letznav-iframe-script"]');
-    iFrames.forEach(element => element.remove());
+    if (iFrames) {
+        iFrames.forEach(element => element.remove());
+    }
+
 
     // Removes iFrame box
     const boxFrames = targetIFrame.document.querySelectorAll('div[id="__af_Z_maskingframe"]');
-    boxFrames.forEach(element => element.remove());
+    if (boxFrames) {
+        boxFrames.forEach(element => element.remove());
+    }
+
 
     // Sets stlye attribute of Actions button
     const actionsButton = targetIFrame.document.querySelector("#pt1\\:r1\\:0\\:r0\\:0\\:r1\\:0\\:AP1\\:ctb2 > table > tbody > tr > td.x3ea > a > span")
@@ -51,24 +58,45 @@ function fixUp() {
         console.log('Actions Button Not Found.');
     }
 
+    //action and format and view dropdown text resize
+    const viewDropDown = targetIFrame.document.querySelectorAll('a[class="xh7"]')
+    if (viewDropDown) {
+        viewDropDown.forEach(element => element.style.cssText = 'font-size: 12px;')
+    }
+
+
     // Removes News and Announcement div
     const newsAndAnnouncments = targetIFrame.document.querySelectorAll('div[id$=":r1j_id_2"]');
-    newsAndAnnouncments.forEach(element => element.remove());
+    if (newsAndAnnouncments) {
+        newsAndAnnouncments.forEach(element => element.remove());
+    }
+
 
     // Finds all headers with the appropriate class and sets their width/max-width
     const headerWidth = targetIFrame.document.querySelectorAll('.x1hh');
-    headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    if (headerWidth) {
+        headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    }
+
 
     const headerWidth2 = targetIFrame.document.querySelectorAll('.xnr');
-    headerWidth2.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    if (headerWidth2) {
+        headerWidth2.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    }
 
     // Finds h3 headers and sets their width/max-width 
     const header3Width = targetIFrame.document.querySelectorAll('div[class="x1hj"]');
-    header3Width.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    if (header3Width) {
+        header3Width.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    }
+
 
     // Finds title header and sets width/max-width
     const titleHeader = targetIFrame.document.querySelectorAll('div[class="x1dd"]');
-    titleHeader.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    if (titleHeader) {
+        titleHeader.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    }
+
 
     // Sets the Width of the Setup drop-down list (Setup and Maintenece landing page)
     const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]');
@@ -86,12 +114,17 @@ function fixUp() {
 
     // Sets the overflow for the view/format buttons div to visisble
     const viewButton = targetIFrame.document.querySelectorAll('div[class="x6e"]');
-    viewButton.forEach(element => element.style.overflow = 'visible');
+    if (viewButton) {
+        viewButton.forEach(element => element.style.overflow = 'visible');
+    }
 
 
     // Adjust spacing between divs so buttons don't get smushed
     const plusButton = targetIFrame.document.querySelectorAll('div[id$=":AT1:_ATp:ATtb1"]');
-    plusButton.forEach(element => element.style.cssText = 'left: 8px;');
+    if (plusButton) {
+        plusButton.forEach(element => element.style.cssText = 'left: 8px;');
+    }
+
 
     // Removes need help widget
     const widgetButton = targetIFrame.document.querySelectorAll('letznav-app-player[id="apty-player-root"]')
@@ -100,11 +133,44 @@ function fixUp() {
     }
 
     // Increase height of search results table by 10px
-    const resultsTable = targetIFrame.document.querySelectorAll('div[class="xkh xeo xkh"]');
+    // Eventually store current height and never exceed 10px if ran more than once
+    const resultsTable = targetIFrame.document.querySelectorAll('div[id*=":_ATp:table"]');
     resultsTable.forEach(element => {
         const currentHeight = element.offsetHeight; // Get current height
         element.style.height = `${currentHeight + 10}px`; // Set new height with addition
     });
+
+    // Fixes tabs and white bar alignement for steps 1-3
+    // const selectedTab = targetIFrame.document.querySelectorAll('div[class="flat-tabs-item selected"][aria-selected="true"]')
+    const navmenuContainer = targetIFrame.document.getElementById("navmenu-container");
+    const whiteBar = targetIFrame.document.querySelector('div.flat-tabs-line-selected');
+    let currentChild = navmenuContainer.firstChild;
+    while (currentChild) {
+        if (currentChild.classList.contains("flat-tabs-item") && currentChild.getAttribute("aria-selected") === "true") {
+            break;
+        }
+        const nextSibling = currentChild.nextSibling;
+        navmenuContainer.removeChild(currentChild);
+        currentChild = nextSibling;
+    }
+    if (navmenuContainer) {
+        navmenuContainer.setAttribute('style', 'left: 0px;');
+    };
+    if (whiteBar) {
+        whiteBar.style.left = "0px";
+    }
+
+
+    // Save and close button
+    // Was working now it's not. Need to revist ASAP
+    const saveAndCloseButtons = targetIFrame.document.querySelectorAll('span[class="xx6"]');
+    if (saveAndCloseButtons) {
+        saveAndCloseButtons.forEach(element => {
+            element.style.cssText = 'font-size: 12px; color: white; font-weight: bold;';
+        });
+    }
+
+
 }
 
 // revert
