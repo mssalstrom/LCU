@@ -30,8 +30,8 @@ function fixUp() {
     Creating a standard order - For cut off tables
     TODO: STiCKY HEADERS / TABLES / element.style / Check tips and trick board
     Text wrap for save and close buttons
-    More tables
-    CHECK: Modifying installments
+    More tables ---- Search Results dialog tables - [id$="_afrLovInternalTableId"]
+    CHECK: Modifying installments, Creating a corporate card program (save & close buttons, increment/decrement arrows)
     */
 
     targetIFrame = window.top.document.querySelector('div > iframe[class="tutorial-practice__iframe"]').contentWindow;
@@ -56,6 +56,33 @@ function fixUp() {
         actionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
     } else {
         console.log('Actions Button Not Found.');
+    }
+
+    // Save and close button
+    // Was working now it's not. Need to revist ASAP
+    const saveAndCloseButtons = targetIFrame.document.querySelectorAll('span[class="xx6"]');
+    if (saveAndCloseButtons) {
+        saveAndCloseButtons.forEach(element => {
+            element.style.cssText = 'font-size: 12px; color: white; font-weight: bold;';
+        });
+    }
+
+
+    // Save and close button (Depreciated but still in DHL tutorials)
+    // Was working now it's not. Need to revist ASAP
+    const saveAndCloseButtonsDHL = targetIFrame.document.querySelectorAll('span[class="xtb"]');
+    if (saveAndCloseButtonsDHL) {
+        saveAndCloseButtonsDHL.forEach(element => {
+            element.style.cssText = 'font-size: 12px; font-weight: bold;';
+        });
+    }
+
+    // Text wrap fix for Save and Close buttons in dialogs (will need to be looked at. Was configured with old DHL tutorial)
+    const textWrapButtons = targetIFrame.document.querySelectorAll('button[class="xxd p_AFTextOnly"]');
+    if (textWrapButtons) {
+        textWrapButtons.forEach(element => {
+            element.style.cssText = 'text-wrap: nowrap;';
+        });
     }
 
     //action and format and view dropdown text resize
@@ -128,50 +155,35 @@ function fixUp() {
 
     // Removes need help widget
     const widgetButton = targetIFrame.document.querySelectorAll('letznav-app-player[id="apty-player-root"]')
-    if (widgetButton) {
-        widgetButton.forEach(element => element.remove());
+    for (const element of widgetButton) {
+        element.parentNode.removeChild(element);
     }
-
-    // Increase height of search results table by 10px
-    // Eventually store current height and never exceed 10px if ran more than once
-    const resultsTable = targetIFrame.document.querySelectorAll('div[id*=":_ATp:table"]');
-    resultsTable.forEach(element => {
-        const currentHeight = element.offsetHeight; // Get current height
-        element.style.height = `${currentHeight + 10}px`; // Set new height with addition
-    });
 
     // Fixes tabs and white bar alignement for steps 1-3
     // const selectedTab = targetIFrame.document.querySelectorAll('div[class="flat-tabs-item selected"][aria-selected="true"]')
     const navmenuContainer = targetIFrame.document.getElementById("navmenu-container");
     const whiteBar = targetIFrame.document.querySelector('div.flat-tabs-line-selected');
     let currentChild = navmenuContainer.firstChild;
-    while (currentChild) {
-        if (currentChild.classList.contains("flat-tabs-item") && currentChild.getAttribute("aria-selected") === "true") {
-            break;
+    if (currentChild) {
+        while (currentChild) {
+            if (currentChild.classList.contains("flat-tabs-item") && currentChild.getAttribute("aria-selected") === "true") {
+                break;
+            }
+            const nextSibling = currentChild.nextSibling;
+            navmenuContainer.removeChild(currentChild);
+            currentChild = nextSibling;
         }
-        const nextSibling = currentChild.nextSibling;
-        navmenuContainer.removeChild(currentChild);
-        currentChild = nextSibling;
-    }
-    if (navmenuContainer) {
-        navmenuContainer.setAttribute('style', 'left: 0px;');
-    };
-    if (whiteBar) {
-        whiteBar.style.left = "0px";
-    }
+        if (navmenuContainer) {
+            navmenuContainer.setAttribute('style', 'left: 0px;');
+        };
+        if (whiteBar) {
+            whiteBar.style.left = "0px";
+        };
 
-
-    // Save and close button
-    // Was working now it's not. Need to revist ASAP
-    const saveAndCloseButtons = targetIFrame.document.querySelectorAll('span[class="xx6"]');
-    if (saveAndCloseButtons) {
-        saveAndCloseButtons.forEach(element => {
-            element.style.cssText = 'font-size: 12px; color: white; font-weight: bold;';
-        });
     }
-
 
 }
+
 
 // revert
 function revertFix() {
