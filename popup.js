@@ -32,6 +32,7 @@ function fixUp() {
     Text wrap for save and close buttons
     More tables ---- Search Results dialog tables - [id$="_afrLovInternalTableId"]
     CHECK: Modifying installments, Creating a corporate card program (save & close buttons, increment/decrement arrows)
+    CHECK: Crediting an Existing Transaction DHL for demo maybe
     */
 
     targetIFrame = window.top.document.querySelector('div > iframe[class="tutorial-practice__iframe"]').contentWindow;
@@ -105,6 +106,25 @@ function fixUp() {
         headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
     }
 
+    // Depreciated classes for old captures
+    const headerWidthOLD = targetIFrame.document.querySelectorAll('.x1de');
+    if (headerWidthOLD) {
+        headerWidthOLD.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    }
+
+    // Depreciated classes for smaller headers (search)
+    const headerWidthOLD2 = targetIFrame.document.querySelectorAll('.x1dg');
+    if (headerWidthOLD2) {
+        headerWidthOLD2.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+
+    }
+
+    // Depreciated classes for smaller headers (search)
+    const headerWidthOLD3 = targetIFrame.document.querySelectorAll('.x1df');
+    if (headerWidthOLD3) {
+        headerWidthOLD3.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+    }
+
 
     const headerWidth2 = targetIFrame.document.querySelectorAll('.xnr');
     if (headerWidth2) {
@@ -154,34 +174,40 @@ function fixUp() {
 
 
     // Removes need help widget
-    const widgetButton = targetIFrame.document.querySelectorAll('letznav-app-player[id="apty-player-root"]')
+    const widgetButton = targetIFrame.document.querySelectorAll('#letznav-frame-script');
     for (const element of widgetButton) {
         element.parentNode.removeChild(element);
     }
 
+    // Enforces UTF-8 formatting in the <head> tag
+    const headFix = targetIFrame.document.querySelector('head');
+    const metaAdd = targetIFrame.document.createElement('meta');
+    metaAdd.httpEquiv = 'Content-Type';
+    metaAdd.content = 'text/html; charset=UTF-8';
+    // Remove the incorrect style attribute
+    metaAdd.removeAttribute('style');
+    headFix.appendChild(metaAdd);
+
+
     // Fixes tabs and white bar alignement for steps 1-3
     // const selectedTab = targetIFrame.document.querySelectorAll('div[class="flat-tabs-item selected"][aria-selected="true"]')
-    const navmenuContainer = targetIFrame.document.getElementById("navmenu-container");
-    const whiteBar = targetIFrame.document.querySelector('div.flat-tabs-line-selected');
-    let currentChild = navmenuContainer.firstChild;
-    if (currentChild) {
-        while (currentChild) {
-            if (currentChild.classList.contains("flat-tabs-item") && currentChild.getAttribute("aria-selected") === "true") {
-                break;
-            }
-            const nextSibling = currentChild.nextSibling;
-            navmenuContainer.removeChild(currentChild);
-            currentChild = nextSibling;
-        }
-        if (navmenuContainer) {
-            navmenuContainer.setAttribute('style', 'left: 0px;');
-        };
-        if (whiteBar) {
-            whiteBar.style.left = "0px";
-        };
+    // const navmenuContainer = targetIFrame.document.getElementById("navmenu-container");
+    // const whiteBar = targetIFrame.document.querySelector('div.flat-tabs-line-selected');
 
-    }
+    // // Remove child elements until a selected tab is found
+    // navmenuContainer.childNodes.forEach((child) => {
+    //     if (!child.classList.contains("flat-tabs-item") || child.getAttribute("aria-selected") !== "true") {
+    //         navmenuContainer.removeChild(child);
+    //     }
+    // });
 
+    // // Style adjustments
+    // if (navmenuContainer) {
+    //     navmenuContainer.style.left = "0px";
+    // }
+    // if (whiteBar) {
+    //     whiteBar.style.left = "0px";
+    // }
 }
 
 
