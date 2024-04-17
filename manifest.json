@@ -1,7 +1,7 @@
 {
     "name": "LCU",
     "description": "Cleans stuff up",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "manifest_version": 3,
     "content_scripts": [
         {
@@ -11,6 +11,7 @@
             "run_at": "document_idle",
             "js": [
                 "content.js"
+                
             ]
         }
     ],

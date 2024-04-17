@@ -1,21 +1,40 @@
 
+const fixRun = document.getElementById("run");
+const pageRevert = document.getElementById("revert");
 
-let fixRun = document.getElementById("run");
-let pageRevert = document.getElementById("revert");
 
+// Stores and shows what was fixed as a window alert. ***Not working and I don't know why =( 
+class PopupMessage {
+    constructor(message = "Fixed") {
+        this.message = message;
+    }
+
+    addMessage(message) {
+        this.message += message + "\n";
+        return this.message;
+    }
+
+    show() {
+        window.alert(this.message);
+    }
+}
+
+const messagePopup = new PopupMessage();
 
 fixRun.addEventListener("click", async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-    chrome.scripting.executeScript({
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    await chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        function: fixUp
+        function: fixUp,
+        args: [messagePopup]
     });
+
+    window.close();
+
 });
 
 pageRevert.addEventListener("click", async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     chrome.scripting.executeScript({
         target: { tabId: tab.id },
         function: revertFix
@@ -23,9 +42,20 @@ pageRevert.addEventListener("click", async () => {
 });
 
 
+/* assuming fixUp returns a PopupMessage object:
+  ...  
+  args: [messagePopUp]
+})
+  .then((popupObj) => popupObj.show());
+  where the argument in the then method is the returned value from the Promise
 
-function fixUp() {
+const popupObj = await chrome.scripting.executeScript(...);
+opupObj.show()
+ 
+*/
 
+function fixUp(messagePopup) {
+    // messagePopup.addMessage('TEST');
     /*
     Creating a standard order - For cut off tables
     TODO: STiCKY HEADERS / TABLES / element.style / Check tips and trick board
@@ -33,6 +63,8 @@ function fixUp() {
     More tables ---- Search Results dialog tables - [id$="_afrLovInternalTableId"]
     CHECK: Modifying installments, Creating a corporate card program (save & close buttons, increment/decrement arrows)
     CHECK: Crediting an Existing Transaction DHL for demo maybe
+    Approving an Invoice Adjustment ----- GARBLED TEXT NEEDS TO BE FIXEDDDDDD
+    Viewing the project performance dashboard ----- HEADES AND TABLES WOOOO
     */
 
     targetIFrame = window.top.document.querySelector('div > iframe[class="tutorial-practice__iframe"]').contentWindow;
@@ -41,8 +73,8 @@ function fixUp() {
     const iFrames = targetIFrame.document.querySelectorAll('[id="letznav-iframe-script"]');
     if (iFrames) {
         iFrames.forEach(element => element.remove());
-    }
 
+    }
 
     // Removes iFrame box
     const boxFrames = targetIFrame.document.querySelectorAll('div[id="__af_Z_maskingframe"]');
@@ -50,13 +82,12 @@ function fixUp() {
         boxFrames.forEach(element => element.remove());
     }
 
-
     // Sets stlye attribute of Actions button
-    const actionsButton = targetIFrame.document.querySelector("#pt1\\:r1\\:0\\:r0\\:0\\:r1\\:0\\:AP1\\:ctb2 > table > tbody > tr > td.x3ea > a > span")
+    const actionsButton = targetIFrame.document.querySelector('a[aria-describedby$="_afrdescBy"]');
     if (actionsButton) {
         actionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
     } else {
-        console.log('Actions Button Not Found.');
+
     }
 
     // Save and close button
@@ -101,47 +132,9 @@ function fixUp() {
 
 
     // Finds all headers with the appropriate class and sets their width/max-width
-    const headerWidth = targetIFrame.document.querySelectorAll('.x1hh');
+    const headerWidth = targetIFrame.document.querySelectorAll('[id$="::_afrTtxt"] > div');
     if (headerWidth) {
         headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
-    }
-
-    // Depreciated classes for old captures
-    const headerWidthOLD = targetIFrame.document.querySelectorAll('.x1de');
-    if (headerWidthOLD) {
-        headerWidthOLD.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
-    }
-
-    // Depreciated classes for smaller headers (search)
-    const headerWidthOLD2 = targetIFrame.document.querySelectorAll('.x1dg');
-    if (headerWidthOLD2) {
-        headerWidthOLD2.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
-
-    }
-
-    // Depreciated classes for smaller headers (search)
-    const headerWidthOLD3 = targetIFrame.document.querySelectorAll('.x1df');
-    if (headerWidthOLD3) {
-        headerWidthOLD3.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
-    }
-
-
-    const headerWidth2 = targetIFrame.document.querySelectorAll('.xnr');
-    if (headerWidth2) {
-        headerWidth2.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
-    }
-
-    // Finds h3 headers and sets their width/max-width 
-    const header3Width = targetIFrame.document.querySelectorAll('div[class="x1hj"]');
-    if (header3Width) {
-        header3Width.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
-    }
-
-
-    // Finds title header and sets width/max-width
-    const titleHeader = targetIFrame.document.querySelectorAll('div[class="x1dd"]');
-    if (titleHeader) {
-        titleHeader.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
     }
 
 
@@ -149,6 +142,12 @@ function fixUp() {
     const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]');
     if (setupAndMaintenceDropDown) {
         setupAndMaintenceDropDown.setAttribute('style', 'width: 348px;');
+    }
+
+    // Sets the Width of the Inovice Actions (MCD ERP) drop-down list
+    const mcdInvoiceActions = targetIFrame.document.querySelector('table[id$=":me1::ScrollContent"]');
+    if (mcdInvoiceActions) {
+        mcdInvoiceActions.setAttribute('style', 'width: 320px;');
     }
 
     // Sets the width/heigh of the AFModalGlassPane to 5000x5000
@@ -172,6 +171,12 @@ function fixUp() {
         plusButton.forEach(element => element.style.cssText = 'left: 8px;');
     }
 
+    // MCD Hidden Headers
+    const mcDHiddenHeaders = targetIFrame.document.querySelector('div[id$=":SPpsl3::m"]');
+    if (mcDHiddenHeaders) {
+        mcDHiddenHeaders.style.overflowX = 'visible';
+        mcDHiddenHeaders.style.height = '35px';
+    }
 
     // Removes need help widget
     const widgetButton = targetIFrame.document.querySelectorAll('#letznav-frame-script');
@@ -179,14 +184,51 @@ function fixUp() {
         element.parentNode.removeChild(element);
     }
 
+    // MCD ERP Team Members table cutoff fix
+    const MCDTeamMembersTable = targetIFrame.document.querySelector('div[id$=":psl1::t"]');
+    if (MCDTeamMembersTable) {
+        MCDTeamMembersTable.style.overflow = 'visible';
+    }
+
+    // Text wrap and elipses coded for header text (Works for MCD's need to revist)
+    const headerWrap = targetIFrame.document.querySelector('span[class="x32h"]');
+    const headerWrapTitle = headerWrap.title;
+    if (headerWrap) {
+        headerWrap.setAttribute('style', 'text-wrap: nowrap;');
+        headerWrap.innerText = headerWrapTitle;
+    }
+
+
+    // Increases table height by 10px. Use with caution.
+    // const tableHeight = targetIFrame.document.querySelectorAll('div[id*=":AT1:_ATp:table"]');
+    // if (tableHeight) {
+    //     const currentHeight = tableHeight.offsetHeight; // Get current height
+    //     const newHeight = currentHeight + 10 + 'px'; // Add 10px to height with unit
+    //     tableHeight.style.height = newHeight; // Set the new height
+    //     tableHeight.forEach( element =>  element.style.cssText = newHeight);
+    // };
+
+    // Increase height of search results table by 10px USE WITH CAUTION
+    const resultsTable = targetIFrame.document.querySelectorAll('div[id*="_ATp:table"]');
+    if (resultsTable) {
+        resultsTable.forEach(element => {
+            const currentHeight = element.offsetHeight; // Get current height
+            element.style.height = `${currentHeight + 10}px`; // Set new height with addition
+        });
+    }
+
+
+
     // Enforces UTF-8 formatting in the <head> tag
-    const headFix = targetIFrame.document.querySelector('head');
-    const metaAdd = targetIFrame.document.createElement('meta');
-    metaAdd.httpEquiv = 'Content-Type';
-    metaAdd.content = 'text/html; charset=UTF-8';
-    // Remove the incorrect style attribute
-    metaAdd.removeAttribute('style');
-    headFix.appendChild(metaAdd);
+    // const headFix = targetIFrame.contentWindow.document.querySelector('head');
+    // if (headFix) { 
+    //     const metaTag = targetIFrame.contentWindow.document.createElement('meta');
+    //     metaTag.httpEquiv = 'Content-Type';
+    //     metaTag.content = 'text/html; charset=UTF-8';
+    //     metaTag.style = "";
+    //     headFix.appendChild(metaTag);
+    // }
+
 
 
     // Fixes tabs and white bar alignement for steps 1-3
@@ -208,10 +250,14 @@ function fixUp() {
     // if (whiteBar) {
     //     whiteBar.style.left = "0px";
     // }
+
+    return messagePopup;
 }
 
 
-// revert
+
+
+// revert/refresh
 function revertFix() {
     location.reload();
 }
