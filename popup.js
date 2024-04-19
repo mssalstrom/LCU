@@ -3,15 +3,27 @@ const fixRun = document.getElementById("run");
 const pageRevert = document.getElementById("revert");
 
 
-// Stores and shows what was fixed as a window alert. ***Not working and I don't know why =( 
+/**
+ * PopupMessage class is used to store and display messages.
+ * 
+ * @property {string} message - The message to be displayed.
+ * 
+ * @constructor
+ * @param {string} [message="Fixed"] - The initial message.
+ * 
+ * @example
+ * const messagePopup = new PopupMessage();
+ * messagePopup.addMessage("Additional message");
+ * messagePopup.show(); // Displays "FixedAdditional message"
+ */
 class PopupMessage {
+   
     constructor(message = "Fixed") {
         this.message = message;
     }
 
     addMessage(message) {
         this.message += message + "\n";
-        return this.message;
     }
 
     show() {
@@ -21,74 +33,82 @@ class PopupMessage {
 
 const messagePopup = new PopupMessage();
 
+/**
+ * Adds a click event listener to the 'fixRun' button.
+ * 
+ * When the 'fixRun' button is clicked, it queries the active tab in the current window,
+ * executes the 'fixUp' function in the context of that tab, adds the return value of the
+ * 'fixUp' function to the 'messagePopup' instance, displays the popup message, and closes the window.
+ * 
+ * @async
+ * @function
+ * @example
+ * fixRun.addEventListener("click", async () => {
+ *     // ...
+ * });
+ */
 fixRun.addEventListener("click", async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    await chrome.scripting.executeScript({
+    const results = await chrome.scripting.executeScript({
         target: { tabId: tab.id },
         function: fixUp,
-        args: [messagePopup]
     });
-
+    // results[0].result contains the return value of fixUp function
+    messagePopup.addMessage(results[0].result);
+    messagePopup.show();
     window.close();
-
 });
 
-pageRevert.addEventListener("click", async () => {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        function: revertFix
-    });
-});
+/**
+ * The 'fixUp' function is used modify the content of the active tab.
+ * 
+ * It is executed in the context of the active tab when the 'fixRun' button is clicked.
+ * The return value of this function is added to the 'messagePopup' instance.
+ * 
+ * @function
+ * @returns {string} The alert message.
+ * 
+ * @example
+ * const results = await chrome.scripting.executeScript({
+ *     target: { tabId: tab.id },
+ *     function: fixUp,
+ * });
+ * 
+ * @todo Implement sticky headers/tables/element.style. Check tips and trick board.
+ * @todo Implement text wrap for save and close buttons.
+ * @todo Implement more tables. Search Results dialog tables - [id$="_afrLovInternalTableId"].
+ * @todo Check: Modifying installments, Creating a corporate card program (save & close buttons, increment/decrement arrows).
+ * @todo Check: Crediting an Existing Transaction DHL for demo maybe.
+ * @todo Fix: Approving an Invoice Adjustment - garbled text needs to be fixed.
+ * @todo Fix: Viewing the project performance dashboard - headers and tables.
+ */
+function fixUp() {
 
+    // Holds alert message
+    let messageHolder = "";
 
-/* assuming fixUp returns a PopupMessage object:
-  ...  
-  args: [messagePopUp]
-})
-  .then((popupObj) => popupObj.show());
-  where the argument in the then method is the returned value from the Promise
-
-const popupObj = await chrome.scripting.executeScript(...);
-opupObj.show()
- 
-*/
-
-function fixUp(messagePopup) {
-    // messagePopup.addMessage('TEST');
-    /*
-    Creating a standard order - For cut off tables
-    TODO: STiCKY HEADERS / TABLES / element.style / Check tips and trick board
-    Text wrap for save and close buttons
-    More tables ---- Search Results dialog tables - [id$="_afrLovInternalTableId"]
-    CHECK: Modifying installments, Creating a corporate card program (save & close buttons, increment/decrement arrows)
-    CHECK: Crediting an Existing Transaction DHL for demo maybe
-    Approving an Invoice Adjustment ----- GARBLED TEXT NEEDS TO BE FIXEDDDDDD
-    Viewing the project performance dashboard ----- HEADES AND TABLES WOOOO
-    */
-
+    // Target iFrame
     targetIFrame = window.top.document.querySelector('div > iframe[class="tutorial-practice__iframe"]').contentWindow;
 
     // Removes iFrame dots
     const iFrames = targetIFrame.document.querySelectorAll('[id="letznav-iframe-script"]');
     if (iFrames) {
         iFrames.forEach(element => element.remove());
+        messageHolder += '\nRemoved iFrames';
 
-    }
+    };
 
     // Removes iFrame box
     const boxFrames = targetIFrame.document.querySelectorAll('div[id="__af_Z_maskingframe"]');
     if (boxFrames) {
         boxFrames.forEach(element => element.remove());
-    }
+    };
 
     // Sets stlye attribute of Actions button
     const actionsButton = targetIFrame.document.querySelector('a[aria-describedby$="_afrdescBy"]');
     if (actionsButton) {
         actionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
-    } else {
-
-    }
+    };
 
     // Save and close button
     // Was working now it's not. Need to revist ASAP
@@ -97,7 +117,7 @@ function fixUp(messagePopup) {
         saveAndCloseButtons.forEach(element => {
             element.style.cssText = 'font-size: 12px; color: white; font-weight: bold;';
         });
-    }
+    };
 
 
     // Save and close button (Depreciated but still in DHL tutorials)
@@ -107,7 +127,7 @@ function fixUp(messagePopup) {
         saveAndCloseButtonsDHL.forEach(element => {
             element.style.cssText = 'font-size: 12px; font-weight: bold;';
         });
-    }
+    };
 
     // Text wrap fix for Save and Close buttons in dialogs (will need to be looked at. Was configured with old DHL tutorial)
     const textWrapButtons = targetIFrame.document.querySelectorAll('button[class="xxd p_AFTextOnly"]');
@@ -115,40 +135,40 @@ function fixUp(messagePopup) {
         textWrapButtons.forEach(element => {
             element.style.cssText = 'text-wrap: nowrap;';
         });
-    }
+    };
 
     //action and format and view dropdown text resize
     const viewDropDown = targetIFrame.document.querySelectorAll('a[class="xh7"]')
     if (viewDropDown) {
         viewDropDown.forEach(element => element.style.cssText = 'font-size: 12px;')
-    }
+    };
 
 
     // Removes News and Announcement div
     const newsAndAnnouncments = targetIFrame.document.querySelectorAll('div[id$=":r1j_id_2"]');
     if (newsAndAnnouncments) {
         newsAndAnnouncments.forEach(element => element.remove());
-    }
+    };
 
 
     // Finds all headers with the appropriate class and sets their width/max-width
     const headerWidth = targetIFrame.document.querySelectorAll('[id$="::_afrTtxt"] > div');
     if (headerWidth) {
         headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
-    }
+    };
 
 
     // Sets the Width of the Setup drop-down list (Setup and Maintenece landing page)
     const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]');
     if (setupAndMaintenceDropDown) {
         setupAndMaintenceDropDown.setAttribute('style', 'width: 348px;');
-    }
+    };
 
     // Sets the Width of the Inovice Actions (MCD ERP) drop-down list
     const mcdInvoiceActions = targetIFrame.document.querySelector('table[id$=":me1::ScrollContent"]');
     if (mcdInvoiceActions) {
         mcdInvoiceActions.setAttribute('style', 'width: 320px;');
-    }
+    };
 
     // Sets the width/heigh of the AFModalGlassPane to 5000x5000
     const glassPane = targetIFrame.document.querySelector('div[class="AFModalGlassPane"]');
@@ -156,39 +176,51 @@ function fixUp(messagePopup) {
         glassPane.setAttribute('style', 'width: 5000px; height: 5000px;');
     } else {
         console.log('Actions Button Not Found.');
-    }
+    };
 
     // Sets the overflow for the view/format buttons div to visisble
     const viewButton = targetIFrame.document.querySelectorAll('div[class="x6e"]');
     if (viewButton) {
         viewButton.forEach(element => element.style.overflow = 'visible');
-    }
+    };
 
+    // MCD's Action Button (depreciated class) **Not working for some reason??***
+    const mcdActionsButton = targetIFrame.document.querySelector('span[class="xri"]');
+    if (mcdActionsButton) {
+        mcdActionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
+    };
 
     // Adjust spacing between divs so buttons don't get smushed
     const plusButton = targetIFrame.document.querySelectorAll('div[id$=":AT1:_ATp:ATtb1"]');
     if (plusButton) {
         plusButton.forEach(element => element.style.cssText = 'left: 8px;');
-    }
+    };
+
+    // Removes Sticky Headers (Just for MCDs will revist)
+    const mcDStickyHeaders = targetIFrame.document.querySelector('div[id$=":cupanel1:SPpsl2"]');
+    if (mcDStickyHeaders) {
+        mcDStickyHeaders.classList.remove('sticky-header');
+    };
 
     // MCD Hidden Headers
     const mcDHiddenHeaders = targetIFrame.document.querySelector('div[id$=":SPpsl3::m"]');
     if (mcDHiddenHeaders) {
         mcDHiddenHeaders.style.overflowX = 'visible';
         mcDHiddenHeaders.style.height = '35px';
-    }
+        messageHolder += '\nFixed Hidden Headers';
+    };
 
     // Removes need help widget
     const widgetButton = targetIFrame.document.querySelectorAll('#letznav-frame-script');
     for (const element of widgetButton) {
         element.parentNode.removeChild(element);
-    }
+    };
 
     // MCD ERP Team Members table cutoff fix
     const MCDTeamMembersTable = targetIFrame.document.querySelector('div[id$=":psl1::t"]');
     if (MCDTeamMembersTable) {
         MCDTeamMembersTable.style.overflow = 'visible';
-    }
+    };
 
     // Text wrap and elipses coded for header text (Works for MCD's need to revist)
     const headerWrap = targetIFrame.document.querySelector('span[class="x32h"]');
@@ -196,7 +228,8 @@ function fixUp(messagePopup) {
     if (headerWrap) {
         headerWrap.setAttribute('style', 'text-wrap: nowrap;');
         headerWrap.innerText = headerWrapTitle;
-    }
+    };
+
 
 
     // Increases table height by 10px. Use with caution.
@@ -215,7 +248,17 @@ function fixUp(messagePopup) {
             const currentHeight = element.offsetHeight; // Get current height
             element.style.height = `${currentHeight + 10}px`; // Set new height with addition
         });
-    }
+    };
+
+    // // MCD's Req tables
+    const mcdReqTables = targetIFrame.document.querySelectorAll('div[id*="AppTable:_ATp:"]');
+    if (mcdReqTables) {
+        mcdReqTables.forEach(element => {
+            element.setAttribute('style', 'height: max-content');
+        });
+    };
+
+
 
 
 
@@ -251,13 +294,5 @@ function fixUp(messagePopup) {
     //     whiteBar.style.left = "0px";
     // }
 
-    return messagePopup;
-}
-
-
-
-
-// revert/refresh
-function revertFix() {
-    location.reload();
+    return messageHolder;
 }
