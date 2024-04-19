@@ -17,15 +17,13 @@ const pageRevert = document.getElementById("revert");
  * messagePopup.show(); // Displays "FixedAdditional message"
  */
 class PopupMessage {
-   
-    constructor(message = "Fixed") {
+
+    constructor(message = "Fixed:") {
         this.message = message;
     }
-
     addMessage(message) {
         this.message += message + "\n";
     }
-
     show() {
         window.alert(this.message);
     }
@@ -84,151 +82,258 @@ fixRun.addEventListener("click", async () => {
  */
 function fixUp() {
 
+    /*
+    Viewing the project performance dashboard
+
+    */
+
     // Holds alert message
     let messageHolder = "";
 
     // Target iFrame
     targetIFrame = window.top.document.querySelector('div > iframe[class="tutorial-practice__iframe"]').contentWindow;
 
-    // Removes iFrame dots
-    const iFrames = targetIFrame.document.querySelectorAll('[id="letznav-iframe-script"]');
-    if (iFrames) {
-        iFrames.forEach(element => element.remove());
-        messageHolder += '\nRemoved iFrames';
 
+    try {
+        // Removes iFrame dots
+        const iFrames = targetIFrame.document.querySelectorAll('[id="letznav-iframe-script"]');
+        if (iFrames) {
+            iFrames.forEach(element => element.remove());
+            messageHolder += '\nRemoved iFrames';
+        }
+    } catch (error) {
+        console.log('Iframes not found: ');
     };
 
-    // Removes iFrame box
-    const boxFrames = targetIFrame.document.querySelectorAll('div[id="__af_Z_maskingframe"]');
-    if (boxFrames) {
-        boxFrames.forEach(element => element.remove());
+    try {
+        // Removes iFrame box
+        const boxFrames = targetIFrame.document.querySelectorAll('div[id="__af_Z_maskingframe"]');
+        if (boxFrames) {
+            boxFrames.forEach(element => element.remove());
+            messageHolder += '\nRemoved Box Frames';
+        };
+    } catch (error) {
+        console.log('Box Frames not found: ');
     };
 
-    // Sets stlye attribute of Actions button
-    const actionsButton = targetIFrame.document.querySelector('a[aria-describedby$="_afrdescBy"]');
-    if (actionsButton) {
-        actionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
-    };
-
-    // Save and close button
-    // Was working now it's not. Need to revist ASAP
-    const saveAndCloseButtons = targetIFrame.document.querySelectorAll('span[class="xx6"]');
-    if (saveAndCloseButtons) {
-        saveAndCloseButtons.forEach(element => {
-            element.style.cssText = 'font-size: 12px; color: white; font-weight: bold;';
-        });
-    };
-
-
-    // Save and close button (Depreciated but still in DHL tutorials)
-    // Was working now it's not. Need to revist ASAP
-    const saveAndCloseButtonsDHL = targetIFrame.document.querySelectorAll('span[class="xtb"]');
-    if (saveAndCloseButtonsDHL) {
-        saveAndCloseButtonsDHL.forEach(element => {
-            element.style.cssText = 'font-size: 12px; font-weight: bold;';
-        });
-    };
-
-    // Text wrap fix for Save and Close buttons in dialogs (will need to be looked at. Was configured with old DHL tutorial)
-    const textWrapButtons = targetIFrame.document.querySelectorAll('button[class="xxd p_AFTextOnly"]');
-    if (textWrapButtons) {
-        textWrapButtons.forEach(element => {
-            element.style.cssText = 'text-wrap: nowrap;';
-        });
-    };
-
-    //action and format and view dropdown text resize
-    const viewDropDown = targetIFrame.document.querySelectorAll('a[class="xh7"]')
-    if (viewDropDown) {
-        viewDropDown.forEach(element => element.style.cssText = 'font-size: 12px;')
-    };
-
-
-    // Removes News and Announcement div
-    const newsAndAnnouncments = targetIFrame.document.querySelectorAll('div[id$=":r1j_id_2"]');
-    if (newsAndAnnouncments) {
-        newsAndAnnouncments.forEach(element => element.remove());
-    };
-
-
-    // Finds all headers with the appropriate class and sets their width/max-width
-    const headerWidth = targetIFrame.document.querySelectorAll('[id$="::_afrTtxt"] > div');
-    if (headerWidth) {
-        headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
-    };
-
-
-    // Sets the Width of the Setup drop-down list (Setup and Maintenece landing page)
-    const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]');
-    if (setupAndMaintenceDropDown) {
-        setupAndMaintenceDropDown.setAttribute('style', 'width: 348px;');
-    };
-
-    // Sets the Width of the Inovice Actions (MCD ERP) drop-down list
-    const mcdInvoiceActions = targetIFrame.document.querySelector('table[id$=":me1::ScrollContent"]');
-    if (mcdInvoiceActions) {
-        mcdInvoiceActions.setAttribute('style', 'width: 320px;');
-    };
-
-    // Sets the width/heigh of the AFModalGlassPane to 5000x5000
-    const glassPane = targetIFrame.document.querySelector('div[class="AFModalGlassPane"]');
-    if (glassPane) {
-        glassPane.setAttribute('style', 'width: 5000px; height: 5000px;');
-    } else {
+    try {
+        // Sets stlye attribute of Actions button
+        const actionsButton = targetIFrame.document.querySelector('a[aria-describedby$="_afrdescBy"]');
+        if (actionsButton) {
+            actionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
+        };
+    } catch (error) {
         console.log('Actions Button Not Found.');
     };
 
-    // Sets the overflow for the view/format buttons div to visisble
-    const viewButton = targetIFrame.document.querySelectorAll('div[class="x6e"]');
-    if (viewButton) {
-        viewButton.forEach(element => element.style.overflow = 'visible');
+    try {
+        // Save and close button
+        // Was working now it's not. Need to revist ASAP
+        const saveAndCloseButtons = targetIFrame.document.querySelectorAll('span[class="xx6"]');
+        if (saveAndCloseButtons) {
+            saveAndCloseButtons.forEach(element => {
+                element.style.cssText = 'font-size: 12px; color: white; font-weight: bold;';
+            });
+        };
+    } catch (error) {
+        console.log('Save and Close Button Not Found.');
     };
 
-    // MCD's Action Button (depreciated class) **Not working for some reason??***
-    const mcdActionsButton = targetIFrame.document.querySelector('span[class="xri"]');
-    if (mcdActionsButton) {
-        mcdActionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
+    try {
+        // Save and close button (Depreciated but still in DHL tutorials)
+        // Was working now it's not. Need to revist ASAP
+        const saveAndCloseButtonsDHL = targetIFrame.document.querySelectorAll('span[class="xtb"]');
+        if (saveAndCloseButtonsDHL) {
+            saveAndCloseButtonsDHL.forEach(element => {
+                element.style.cssText = 'font-size: 12px; font-weight: bold;';
+            });
+        };
+    } catch (error) {
+        console.log('Save and Close Button Not Found.');
     };
 
-    // Adjust spacing between divs so buttons don't get smushed
-    const plusButton = targetIFrame.document.querySelectorAll('div[id$=":AT1:_ATp:ATtb1"]');
-    if (plusButton) {
-        plusButton.forEach(element => element.style.cssText = 'left: 8px;');
+    try {
+        // Text wrap fix for Save and Close buttons in dialogs (will need to be looked at. Was configured with old DHL tutorial)
+        const textWrapButtons = targetIFrame.document.querySelectorAll('button[class="xxd p_AFTextOnly"]');
+        if (textWrapButtons) {
+            textWrapButtons.forEach(element => {
+                element.style.cssText = 'text-wrap: nowrap;';
+            });
+        };
+    } catch (error) {
+        console.log('Text Wrap Button Not Found.');
     };
 
-    // Removes Sticky Headers (Just for MCDs will revist)
-    const mcDStickyHeaders = targetIFrame.document.querySelector('div[id$=":cupanel1:SPpsl2"]');
-    if (mcDStickyHeaders) {
-        mcDStickyHeaders.classList.remove('sticky-header');
+    try {
+        //action and format and view dropdown text resize
+        const viewDropDown = targetIFrame.document.querySelectorAll('a[class="xh7"]')
+        if (viewDropDown) {
+            viewDropDown.forEach(element => element.style.cssText = 'font-size: 12px;')
+        };
+    } catch (error) {
+        console.log('View Drop Down Button Not Found.');
     };
 
-    // MCD Hidden Headers
-    const mcDHiddenHeaders = targetIFrame.document.querySelector('div[id$=":SPpsl3::m"]');
-    if (mcDHiddenHeaders) {
-        mcDHiddenHeaders.style.overflowX = 'visible';
-        mcDHiddenHeaders.style.height = '35px';
-        messageHolder += '\nFixed Hidden Headers';
+    try {
+        // Removes News and Announcement div
+        const newsAndAnnouncments = targetIFrame.document.querySelectorAll('div[id$=":r1j_id_2"]');
+        if (newsAndAnnouncments) {
+            newsAndAnnouncments.forEach(element => element.remove());
+        };
+    } catch (error) {
+        console.log('News and Announcments Not Found.');
     };
 
-    // Removes need help widget
-    const widgetButton = targetIFrame.document.querySelectorAll('#letznav-frame-script');
-    for (const element of widgetButton) {
-        element.parentNode.removeChild(element);
+    try {
+        // Finds all headers with the appropriate class and sets their width/max-width
+        const headerWidth = targetIFrame.document.querySelectorAll('[id$="::_afrTtxt"] > div');
+        if (headerWidth) {
+            headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+        };
+    } catch (error) {
+        console.log('Header Width Not Found.');
+    }
+
+    try {
+        // Sets the Width of the Setup drop-down list (Setup and Maintenece landing page)
+        const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]');
+        if (setupAndMaintenceDropDown) {
+            setupAndMaintenceDropDown.setAttribute('style', 'width: 348px;');
+        };
+    } catch (error) {
+        console.log('Setup and Maintence Drop Down Not Found.');
     };
 
-    // MCD ERP Team Members table cutoff fix
-    const MCDTeamMembersTable = targetIFrame.document.querySelector('div[id$=":psl1::t"]');
-    if (MCDTeamMembersTable) {
-        MCDTeamMembersTable.style.overflow = 'visible';
+    try {
+        // Sets the Width of the Inovice Actions (MCD ERP) drop-down list
+        const mcdInvoiceActions = targetIFrame.document.querySelector('table[id$=":me1::ScrollContent"]');
+        if (mcdInvoiceActions) {
+            mcdInvoiceActions.setAttribute('style', 'width: 320px;');
+        };
+    } catch (error) {
+        console.log('Invoice Actions Drop Down Not Found.');
     };
 
-    // Text wrap and elipses coded for header text (Works for MCD's need to revist)
-    const headerWrap = targetIFrame.document.querySelector('span[class="x32h"]');
-    const headerWrapTitle = headerWrap.title;
-    if (headerWrap) {
-        headerWrap.setAttribute('style', 'text-wrap: nowrap;');
-        headerWrap.innerText = headerWrapTitle;
+    try {
+        // Sets the width/heigh of the AFModalGlassPane to 5000x5000
+        const glassPane = targetIFrame.document.querySelector('div[class="AFModalGlassPane"]');
+        if (glassPane) {
+            glassPane.setAttribute('style', 'width: 5000px; height: 5000px;');
+        } else {
+            console.log('Actions Button Not Found.');
+        };
+    } catch (error) {
+        console.log('Glass Pane Not Found.');
     };
+
+    try {
+        // Sets the overflow for the view/format buttons div to visisble
+        const viewButton = targetIFrame.document.querySelectorAll('div[class="x6e"]');
+        if (viewButton) {
+            viewButton.forEach(element => element.style.overflow = 'visible');
+        };
+    } catch (error) {
+        console.log('View Button Not Found.');
+    };
+
+    try {
+        // MCD's Action Button (depreciated class) **Not working for some reason??***
+        const mcdActionsButton = targetIFrame.document.querySelector('span[class="xri"]');
+        if (mcdActionsButton) {
+            mcdActionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
+        };
+    } catch (error) {
+        console.log('MCD Actions Button Not Found.');
+    };
+
+    try {
+        // Adjust spacing between divs so buttons don't get smushed
+        const plusButton = targetIFrame.document.querySelectorAll('div[id$=":AT1:_ATp:ATtb1"]');
+        if (plusButton) {
+            plusButton.forEach(element => element.style.cssText = 'left: 8px;');
+        };
+    } catch (error) {
+        console.log('Plus Button Not Found.');
+    };
+
+    try {
+        // Removes Sticky Headers (Just for MCDs will revist)
+        const mcDStickyHeaders = targetIFrame.document.querySelector('div[id$=":cupanel1:SPpsl2"]');
+        if (mcDStickyHeaders) {
+            mcDStickyHeaders.classList.remove('sticky-header');
+        };
+    } catch (error) {
+        console.log('Sticky Headers Not Found.');
+    };
+
+    try {
+        // MCD Hidden Headers
+        const mcDHiddenHeaders = targetIFrame.document.querySelector('div[id$=":SPpsl3::m"]');
+        if (mcDHiddenHeaders) {
+            mcDHiddenHeaders.style.overflowX = 'visible';
+            mcDHiddenHeaders.style.height = '35px';
+            messageHolder += '\nFixed Hidden Headers';
+        };
+    } catch (error) {
+        console.log('Hidden Headers Not Found.');
+    };
+
+    try {
+        // Removes need help widget
+        const widgetButton = targetIFrame.document.querySelectorAll('#letznav-frame-script');
+        for (const element of widgetButton) {
+            element.parentNode.removeChild(element);
+        };
+    } catch (error) {
+        console.log('Need Help Widget Not Found.');
+    };
+
+    try {
+        // MCD ERP Team Members table cutoff fix
+        const MCDTeamMembersTable = targetIFrame.document.querySelector('div[id$=":psl1::t"]');
+        if (MCDTeamMembersTable) {
+            MCDTeamMembersTable.style.overflow = 'visible';
+        };
+    } catch (error) {
+        console.log('MCD Team Members Table Not Found.');
+    };
+
+    try {
+        // Text wrap and elipses coded for header text (Works for MCD's need to revist)
+        const headerWrap = targetIFrame.document.querySelector('span[class="x32h"]');
+        const headerWrapTitle = headerWrap.title;
+        if (headerWrap) {
+            headerWrap.setAttribute('style', 'text-wrap: nowrap;');
+            headerWrap.innerText = headerWrapTitle;
+        };
+    } catch (error) {
+        console.log('Header Wrap Not Found.');
+    };
+
+    try {
+    const resultsTable = targetIFrame.document.querySelectorAll('div[id*="_ATp:table"]');
+    if (resultsTable) {
+        resultsTable.forEach(element => {
+            const currentHeight = element.offsetHeight; // Get current height
+            element.style.height = `${currentHeight + 10}px`; // Set new height with addition
+        });
+    };
+    } catch (error) {
+        console.log('Results Table Not Found.');
+    };
+
+    try {
+    // // MCD's Req tables
+    const mcdReqTables = targetIFrame.document.querySelectorAll('div[id*="AppTable:_ATp:"]');
+    if (mcdReqTables) {
+        mcdReqTables.forEach(element => {
+            element.setAttribute('style', 'height: max-content');
+        });
+    };
+    } catch (error) {
+        console.log('MCD Req Tables Not Found.');
+    };
+
 
 
 
@@ -242,24 +347,6 @@ function fixUp() {
     // };
 
     // Increase height of search results table by 10px USE WITH CAUTION
-    const resultsTable = targetIFrame.document.querySelectorAll('div[id*="_ATp:table"]');
-    if (resultsTable) {
-        resultsTable.forEach(element => {
-            const currentHeight = element.offsetHeight; // Get current height
-            element.style.height = `${currentHeight + 10}px`; // Set new height with addition
-        });
-    };
-
-    // // MCD's Req tables
-    const mcdReqTables = targetIFrame.document.querySelectorAll('div[id*="AppTable:_ATp:"]');
-    if (mcdReqTables) {
-        mcdReqTables.forEach(element => {
-            element.setAttribute('style', 'height: max-content');
-        });
-    };
-
-
-
 
 
     // Enforces UTF-8 formatting in the <head> tag
