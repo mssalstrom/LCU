@@ -18,7 +18,7 @@ const pageRevert = document.getElementById("revert");
  */
 class PopupMessage {
 
-    constructor(message = "Fixed:") {
+    constructor(message = "") {
         this.message = message;
     }
     addMessage(message) {
@@ -79,6 +79,7 @@ fixRun.addEventListener("click", async () => {
  * @todo Check: Crediting an Existing Transaction DHL for demo maybe.
  * @todo Fix: Approving an Invoice Adjustment - garbled text needs to be fixed.
  * @todo Fix: Viewing the project performance dashboard - headers and tables.
+ * @todo Fix: Alert message with null value if nothing is fixed
  */
 function fixUp() {
 
@@ -89,6 +90,7 @@ function fixUp() {
 
     // Holds alert message
     let messageHolder = "";
+    let isFixed = false;
 
     // Target iFrame
     targetIFrame = window.top.document.querySelector('div > iframe[class="tutorial-practice__iframe"]').contentWindow;
@@ -96,20 +98,26 @@ function fixUp() {
 
     try {
         // Removes iFrame dots
-        const iFrames = targetIFrame.document.querySelectorAll('[id="letznav-iframe-script"]');
+        const iFrames = targetIFrame.document.querySelectorAll('[id="letznav-iframe-script"]').checkVisibility();
         if (iFrames) {
             iFrames.forEach(element => element.remove());
-            messageHolder += '\nRemoved iFrames';
-        }
+            isFixed = true;
+        };
+        if (isFixed) {
+            messageHolder += '\nRemoved iFrame Dots';
+        };
     } catch (error) {
         console.log('Iframes not found: ');
     };
 
     try {
         // Removes iFrame box
-        const boxFrames = targetIFrame.document.querySelectorAll('div[id="__af_Z_maskingframe"]');
+        const boxFrames = targetIFrame.document.querySelectorAll('div[id="__af_Z_maskingframe"]').checkVisibility();
         if (boxFrames) {
             boxFrames.forEach(element => element.remove());
+            isFixed = true;
+        };
+        if (isFixed) {
             messageHolder += '\nRemoved Box Frames';
         };
     } catch (error) {
@@ -121,6 +129,10 @@ function fixUp() {
         const actionsButton = targetIFrame.document.querySelector('a[aria-describedby$="_afrdescBy"]');
         if (actionsButton) {
             actionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
+            isFixed = true;
+        };
+        if (isFixed) {
+            messageHolder += '\nFixed Actions Button';
         };
     } catch (error) {
         console.log('Actions Button Not Found.');
@@ -129,11 +141,15 @@ function fixUp() {
     try {
         // Save and close button
         // Was working now it's not. Need to revist ASAP
-        const saveAndCloseButtons = targetIFrame.document.querySelectorAll('span[class="xx6"]');
+        const saveAndCloseButtons = targetIFrame.document.querySelector('span[class="xx6"]');
         if (saveAndCloseButtons) {
             saveAndCloseButtons.forEach(element => {
                 element.style.cssText = 'font-size: 12px; color: white; font-weight: bold;';
+                isFixed = true;
             });
+        };
+        if (isFixed) {
+            messageHolder += '\nFixed Save and Close Button';
         };
     } catch (error) {
         console.log('Save and Close Button Not Found.');
@@ -142,11 +158,15 @@ function fixUp() {
     try {
         // Save and close button (Depreciated but still in DHL tutorials)
         // Was working now it's not. Need to revist ASAP
-        const saveAndCloseButtonsDHL = targetIFrame.document.querySelectorAll('span[class="xtb"]');
+        const saveAndCloseButtonsDHL = targetIFrame.document.querySelectorAll('span[class="xtb"]').checkVisibility();
         if (saveAndCloseButtonsDHL) {
             saveAndCloseButtonsDHL.forEach(element => {
                 element.style.cssText = 'font-size: 12px; font-weight: bold;';
+                isFixed = true;
             });
+            if (isFixed) {
+                messageHolder += '\nFixed Button Text Foramtting';
+            }
         };
     } catch (error) {
         console.log('Save and Close Button Not Found.');
@@ -154,11 +174,15 @@ function fixUp() {
 
     try {
         // Text wrap fix for Save and Close buttons in dialogs (will need to be looked at. Was configured with old DHL tutorial)
-        const textWrapButtons = targetIFrame.document.querySelectorAll('button[class="xxd p_AFTextOnly"]');
+        const textWrapButtons = targetIFrame.document.querySelectorAll('button[class="xxd p_AFTextOnly"]').checkVisibility();
         if (textWrapButtons) {
             textWrapButtons.forEach(element => {
                 element.style.cssText = 'text-wrap: nowrap;';
+                isFixed = true;
             });
+        };
+        if (isFixed) {
+            messageHolder += '\nFixed Text Wrap Button';
         };
     } catch (error) {
         console.log('Text Wrap Button Not Found.');
@@ -166,9 +190,13 @@ function fixUp() {
 
     try {
         //action and format and view dropdown text resize
-        const viewDropDown = targetIFrame.document.querySelectorAll('a[class="xh7"]')
+        const viewDropDown = targetIFrame.document.querySelectorAll('a[class="xh7"]').checkVisibility();
         if (viewDropDown) {
             viewDropDown.forEach(element => element.style.cssText = 'font-size: 12px;')
+            isFixed = true;
+        };
+        if (isFixed) {
+            messageHolder += '\nFixed View Drop Down Button';
         };
     } catch (error) {
         console.log('View Drop Down Button Not Found.');
@@ -176,9 +204,13 @@ function fixUp() {
 
     try {
         // Removes News and Announcement div
-        const newsAndAnnouncments = targetIFrame.document.querySelectorAll('div[id$=":r1j_id_2"]');
+        const newsAndAnnouncments = targetIFrame.document.querySelector('div[id$=":r1j_id_2"]').checkVisibility();
         if (newsAndAnnouncments) {
             newsAndAnnouncments.forEach(element => element.remove());
+            isFixed = true;
+        };
+        if (isFixed) {
+            messageHolder += '\nRemoved News and Announcments';
         };
     } catch (error) {
         console.log('News and Announcments Not Found.');
@@ -189,6 +221,10 @@ function fixUp() {
         const headerWidth = targetIFrame.document.querySelectorAll('[id$="::_afrTtxt"] > div');
         if (headerWidth) {
             headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
+            isFixed = true;
+        };
+        if (isFixed) {
+            messageHolder += '\nFixed Guide Image Elipses';
         };
     } catch (error) {
         console.log('Header Width Not Found.');
@@ -196,9 +232,10 @@ function fixUp() {
 
     try {
         // Sets the Width of the Setup drop-down list (Setup and Maintenece landing page)
-        const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]');
+        const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]').checkVisibility();
         if (setupAndMaintenceDropDown) {
             setupAndMaintenceDropDown.setAttribute('style', 'width: 348px;');
+            messageHolder += '\nFixed Setup and Maintence Drop Down';
         };
     } catch (error) {
         console.log('Setup and Maintence Drop Down Not Found.');
@@ -209,6 +246,7 @@ function fixUp() {
         const mcdInvoiceActions = targetIFrame.document.querySelector('table[id$=":me1::ScrollContent"]');
         if (mcdInvoiceActions) {
             mcdInvoiceActions.setAttribute('style', 'width: 320px;');
+            messageHolder += '\nFixed Invoice Actions Drop Down';
         };
     } catch (error) {
         console.log('Invoice Actions Drop Down Not Found.');
@@ -219,6 +257,7 @@ function fixUp() {
         const glassPane = targetIFrame.document.querySelector('div[class="AFModalGlassPane"]');
         if (glassPane) {
             glassPane.setAttribute('style', 'width: 5000px; height: 5000px;');
+            messageHolder += '\nFixed Glass Pane';
         } else {
             console.log('Actions Button Not Found.');
         };
@@ -228,9 +267,10 @@ function fixUp() {
 
     try {
         // Sets the overflow for the view/format buttons div to visisble
-        const viewButton = targetIFrame.document.querySelectorAll('div[class="x6e"]');
+        const viewButton = targetIFrame.document.querySelectorAll('div[class="x6e"]').checkVisibility();
         if (viewButton) {
             viewButton.forEach(element => element.style.overflow = 'visible');
+            messageHolder += '\nFixed View Button and Format button overflow';
         };
     } catch (error) {
         console.log('View Button Not Found.');
@@ -241,6 +281,7 @@ function fixUp() {
         const mcdActionsButton = targetIFrame.document.querySelector('span[class="xri"]');
         if (mcdActionsButton) {
             mcdActionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
+            messageHolder += '\nFixed MCD Actions Button';
         };
     } catch (error) {
         console.log('MCD Actions Button Not Found.');
@@ -248,9 +289,10 @@ function fixUp() {
 
     try {
         // Adjust spacing between divs so buttons don't get smushed
-        const plusButton = targetIFrame.document.querySelectorAll('div[id$=":AT1:_ATp:ATtb1"]');
+        const plusButton = targetIFrame.document.querySelectorAll('div[id$=":AT1:_ATp:ATtb1"]').checkVisibility();
         if (plusButton) {
             plusButton.forEach(element => element.style.cssText = 'left: 8px;');
+            messageHolder += '\nFixed Plus Button';
         };
     } catch (error) {
         console.log('Plus Button Not Found.');
@@ -261,6 +303,10 @@ function fixUp() {
         const mcDStickyHeaders = targetIFrame.document.querySelector('div[id$=":cupanel1:SPpsl2"]');
         if (mcDStickyHeaders) {
             mcDStickyHeaders.classList.remove('sticky-header');
+            isFixed = true;
+        };
+        if (isFixed) {
+            messageHolder += '\nFixed Sticky Headers';
         };
     } catch (error) {
         console.log('Sticky Headers Not Found.');
@@ -272,6 +318,9 @@ function fixUp() {
         if (mcDHiddenHeaders) {
             mcDHiddenHeaders.style.overflowX = 'visible';
             mcDHiddenHeaders.style.height = '35px';
+            isFixed = true;
+        };
+        if (isFixed) {
             messageHolder += '\nFixed Hidden Headers';
         };
     } catch (error) {
@@ -283,6 +332,7 @@ function fixUp() {
         const widgetButton = targetIFrame.document.querySelectorAll('#letznav-frame-script');
         for (const element of widgetButton) {
             element.parentNode.removeChild(element);
+            messageHolder += '\nRemoved Need Help Widget';
         };
     } catch (error) {
         console.log('Need Help Widget Not Found.');
@@ -293,6 +343,7 @@ function fixUp() {
         const MCDTeamMembersTable = targetIFrame.document.querySelector('div[id$=":psl1::t"]');
         if (MCDTeamMembersTable) {
             MCDTeamMembersTable.style.overflow = 'visible';
+            messageHolder += '\nFixed MCD Team Members Table';
         };
     } catch (error) {
         console.log('MCD Team Members Table Not Found.');
@@ -305,31 +356,39 @@ function fixUp() {
         if (headerWrap) {
             headerWrap.setAttribute('style', 'text-wrap: nowrap;');
             headerWrap.innerText = headerWrapTitle;
+            if (isFixed) {
+                messageHolder += '\nFixed Header Wrap';
+            }
         };
     } catch (error) {
         console.log('Header Wrap Not Found.');
     };
 
     try {
-    const resultsTable = targetIFrame.document.querySelectorAll('div[id*="_ATp:table"]');
-    if (resultsTable) {
-        resultsTable.forEach(element => {
-            const currentHeight = element.offsetHeight; // Get current height
-            element.style.height = `${currentHeight + 10}px`; // Set new height with addition
-        });
-    };
+        // Set height of results table to max-content
+        const resultsTable = targetIFrame.document.querySelectorAll('div[id*="_ATp:table"]').checkVisibility();
+        if (resultsTable) {
+            resultsTable.forEach(element => {
+                element.setAttribute('style', 'height: max-content');
+                isFixed = true;
+            });
+            if (isFixed) {
+                messageHolder += '\nFixed Results table.';
+            }
+        };
     } catch (error) {
         console.log('Results Table Not Found.');
     };
 
     try {
-    // // MCD's Req tables
-    const mcdReqTables = targetIFrame.document.querySelectorAll('div[id*="AppTable:_ATp:"]');
-    if (mcdReqTables) {
-        mcdReqTables.forEach(element => {
-            element.setAttribute('style', 'height: max-content');
-        });
-    };
+        // // MCD's Req tables
+        const mcdReqTables = targetIFrame.document.querySelectorAll('div[id*="AppTable:_ATp:"]');
+        if (mcdReqTables) {
+            mcdReqTables.forEach(element => {
+                element.setAttribute('style', 'height: max-content');
+                messageHolder += '\nFixed MCD Req Tables';
+            });
+        };
     } catch (error) {
         console.log('MCD Req Tables Not Found.');
     };
@@ -380,6 +439,12 @@ function fixUp() {
     // if (whiteBar) {
     //     whiteBar.style.left = "0px";
     // }
+    if (isFixed) {
+        return messageHolder;
+    }
 
-    return messageHolder;
+    if (!isFixed) {
+        return 'No issues found.';
+    };
+
 }

@@ -1,16 +1,16 @@
 .button {
-    background-image: linear-gradient(to right, #007bff, #00c7ff); /* Blue gradient */
-    border: 1px solid rgba(0, 0, 0, 0.2); /* Semi-transparent black border */
-    color: #fff; /* White text color */
-    padding: 10px 20px; /* Padding for spacing */
-    border-radius: 5px; /* Rounded corners */
-    font-weight: bold; /* Bold text */
-    cursor: pointer; /* Indicate clickable behavior */
-    transition: all 0.2s ease-in-out; /* Smooth transition on hover */
+    background-image: linear-gradient(to right, #0857C3, #00c7ff); 
+    border: 1px solid rgba(0, 0, 0, 0.2); 
+    color: #fff; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: all 0.2s ease-in-out; 
   }
   
   .button:hover {
-    background-image: linear-gradient(to right, #005ead, #00b8f4); /* Change gradient color on hover */
+    background-image: linear-gradient(to right, #005ead, #00b8f4); 
     t
 
 h1 {
