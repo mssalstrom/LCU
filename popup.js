@@ -85,7 +85,9 @@ function fixUp() {
 
     /*
     Viewing the project performance dashboard
-
+    ***Overflow table scroll***
+    ***Peroid end for payables*** =>
+    ***Check view options drop-down***
     */
 
     // Holds alert message
@@ -99,7 +101,7 @@ function fixUp() {
     try {
         // Removes iFrame dots
         const iFrames = targetIFrame.document.querySelectorAll('[id="letznav-iframe-script"]');
-        if (iFrames) {
+        if (iFrames.length > 0) {
             iFrames.forEach(element => element.remove());
             isFixed = true;
             if (isFixed) {
@@ -113,7 +115,7 @@ function fixUp() {
     try {
         // Removes iFrame box
         const boxFrames = targetIFrame.document.querySelectorAll('div[id="__af_Z_maskingframe"]');
-        if (boxFrames) {
+        if (boxFrames.length > 0) {
             boxFrames.forEach(element => element.remove());
             isFixed = true;
             if (isFixed) {
@@ -162,7 +164,7 @@ function fixUp() {
         // Save and close button (Depreciated but still in DHL tutorials)
         // Was working now it's not. Need to revist ASAP
         const saveAndCloseButtonsDHL = targetIFrame.document.querySelectorAll('span[class="xtb"]').checkVisibility();
-        if (saveAndCloseButtonsDHL) {
+        if (saveAndCloseButtonsDHL.length > 0) {
             saveAndCloseButtonsDHL.forEach(element => {
                 element.style.cssText = 'font-size: 12px; font-weight: bold;';
                 isFixed = true;
@@ -178,25 +180,23 @@ function fixUp() {
 
     try {
         // Text wrap fix for Save and Close buttons in dialogs (will need to be looked at. Was configured with old DHL tutorial)
-        const textWrapButtons = targetIFrame.document.querySelectorAll('button[class="xxd p_AFTextOnly"]').checkVisibility();
-        if (textWrapButtons) {
+        const textWrapButtons = targetIFrame.document.querySelectorAll('button[class="xxd p_AFTextOnly"]');
+        if (textWrapButtons.length > 0) {
             textWrapButtons.forEach(element => {
                 element.style.cssText = 'text-wrap: nowrap;';
                 isFixed = true;
-                if (isFixed) {
-                    messageHolder += '\nFixed Text Wrap Button';
-                };
             });
-        };
-
+            if (isFixed) {
+                messageHolder += '\nFixed Text Wrap Button';
+            }
+        }
     } catch (error) {
         console.log('Text Wrap Button Not Found.');
-    };
-
+    }
     try {
         //action and format and view dropdown text resize
-        const viewDropDown = targetIFrame.document.querySelectorAll('a[class="xh7"]').checkVisibility();
-        if (viewDropDown) {
+        const viewDropDown = targetIFrame.document.querySelectorAll('a[class="xh7"]');
+        if (viewDropDown.length > 0) {
             viewDropDown.forEach(element => element.style.cssText = 'font-size: 12px;')
             isFixed = true;
             if (isFixed) {
@@ -210,7 +210,7 @@ function fixUp() {
 
     try {
         // Removes News and Announcement div
-        const newsAndAnnouncments = targetIFrame.document.querySelector('div[id$=":r1j_id_2"]').checkVisibility();
+        const newsAndAnnouncments = targetIFrame.document.querySelector('div[id$=":r1j_id_2"]')
         if (newsAndAnnouncments) {
             newsAndAnnouncments.forEach(element => element.remove());
             isFixed = true;
@@ -226,7 +226,7 @@ function fixUp() {
     try {
         // Finds all headers with the appropriate class and sets their width/max-width
         const headerWidth = targetIFrame.document.querySelectorAll('[id$="::_afrTtxt"] > div');
-        if (headerWidth) {
+        if (headerWidth.length > 0) {
             headerWidth.forEach(element => element.style.cssText = 'width: fit-content; max-width: max-content;');
             isFixed = true;
             if (isFixed) {
@@ -240,7 +240,7 @@ function fixUp() {
 
     try {
         // Sets the Width of the Setup drop-down list (Setup and Maintenece landing page)
-        const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]').checkVisibility();
+        const setupAndMaintenceDropDown = targetIFrame.document.querySelector(' ul[class*="x1r1"]')
         if (setupAndMaintenceDropDown) {
             setupAndMaintenceDropDown.setAttribute('style', 'width: 348px;');
             isFixed = true;
@@ -254,7 +254,7 @@ function fixUp() {
 
     try {
         // Sets the Width of the Inovice Actions (MCD ERP) drop-down list
-        const mcdInvoiceActions = targetIFrame.document.querySelector('table[id$=":me1::ScrollContent"]').checkVisibility();
+        const mcdInvoiceActions = targetIFrame.document.querySelector('table[id$=":me1::ScrollContent"]')
         if (mcdInvoiceActions) {
             mcdInvoiceActions.setAttribute('style', 'width: 320px;');
             isFixed = true;
@@ -284,8 +284,8 @@ function fixUp() {
 
     try {
         // Sets the overflow for the view/format buttons div to visisble
-        const viewButton = targetIFrame.document.querySelectorAll('div[class="x6e"]').checkVisibility();
-        if (viewButton) {
+        const viewButton = targetIFrame.document.querySelectorAll('div[class="x6e"]')
+        if (viewButton.length > 0) {
             viewButton.forEach(element => element.style.overflow = 'visible');
             isFixed = true;
             if (isFixed) {
@@ -313,8 +313,8 @@ function fixUp() {
 
     try {
         // Adjust spacing between divs so buttons don't get smushed
-        const plusButton = targetIFrame.document.querySelectorAll('div[id$=":AT1:_ATp:ATtb1"]').checkVisibility();
-        if (plusButton) {
+        const plusButton = targetIFrame.document.querySelectorAll('div[id$=":AT1:_ATp:ATtb1"]')
+        if (plusButton.length > 0) {
             plusButton.forEach(element => element.style.cssText = 'left: 8px;');
             isFixed = true;
             if (isFixed) {
@@ -366,7 +366,7 @@ function fixUp() {
                 mcdActionsButton2 = span;
             }
         });
-        if (mcdActionsButton2) {
+        if (mcdActionsButton2.length > 0) {
             mcdActionsButton2.setAttribute('style', 'font-size: 12px; font-weight: bold;');
             isFixed = true;
             if (isFixed) {
@@ -379,7 +379,7 @@ function fixUp() {
 
     try {
         // Removes need help widget
-        const widgetButton = targetIFrame.document.querySelectorAll('#letznav-frame-script');
+        const widgetButton = targetIFrame.document.querySelector('#letznav-frame-script');
         for (const element of widgetButton) {
             element.parentNode.removeChild(element);
             isFixed = true;
@@ -420,101 +420,86 @@ function fixUp() {
         console.log('Header Wrap Not Found.');
     };
 
-    try {
-        // Set height of results table to max-content
-        const resultsTable = targetIFrame.document.querySelectorAll('div[id*="_ATp:table"]');
-        if (resultsTable) {
-            resultsTable.forEach(element => {
-                element.setAttribute('style', 'height: max-content');
-                isFixed = true;
-                if (isFixed) {
-                    messageHolder += '\nFixed Results table.';
-                };
-            });
+    // try {
+    //     // Removes "�" from elements
+    //     const allElements = targetIFrame.document.querySelectorAll('*');
 
+    //     allElements.forEach(element => {
+    //         if (element.textContent.includes("�")) {
+    //             element.textContent = element.textContent.replace(/�/g, '');
+    //         }
+    //     });
+    //     messageHolder += '\nRemoved "�" from elements';
+    // } catch (error) {
+    //     console.log('An error occurred while removing "�" from elements:', error);
+    // }
+
+    // try {
+    //     // Set height of results table to max-content
+    //     const resultsTable = targetIFrame.document.querySelectorAll('div[id*="_ATp:table"]');
+    //     if (resultsTable) {
+    //         resultsTable.forEach(element => {
+    //             element.setAttribute('style', 'height: fit-content');
+    //             isFixed = true;
+    //             if (isFixed) {
+    //                 messageHolder += '\nFixed Results table. TEST';
+    //             };
+    //         });
+
+    //     };
+    // } catch (error) {
+    //     console.log('Results Table Not Found.');
+    // };
+
+
+    try {
+        // Removes Refresh date banner
+        const refreshDateBanner = targetIFrame.document.querySelector('table[id="_FOpt1:_UISpbl1"]');
+        if (refreshDateBanner) {
+            refreshDateBanner.remove();
+            isFixed = true;
+            if (isFixed) {
+                messageHolder += '\nRemoved Refresh Date Banner';
+            };
         };
     } catch (error) {
-        console.log('Results Table Not Found.');
+        console.log('Refresh Date Banner Not Found.');
     };
 
+
     try {
-        // // MCD's Req tables
+        // MCD's Req tables
         const mcdReqTables = targetIFrame.document.querySelectorAll('div[id*="AppTable:_ATp:"]');
-        if (mcdReqTables) {
+        if (mcdReqTables.length > 0) {
             mcdReqTables.forEach(element => {
-                element.setAttribute('style', 'height: max-content');
+                element.style.cssText = 'height: fit-content; overflow-x: scroll; width: 100%;';
                 isFixed = true;
-                if (isFixed) {
-                    messageHolder += '\nFixed MCD Req Tables';
-                };
             });
-        };
+            if (isFixed) {
+                messageHolder += '\nFixed MCD Req Tables';
+            }
+        }
     } catch (error) {
         console.log('MCD Req Tables Not Found.');
-    };
+    }
 
     try {
         // MCD's Project Tables
         const mcdProjectTables = targetIFrame.document.querySelectorAll('div[id$="::_ahCt"] > div');
-        if (mcdProjectTables) {
+        if (mcdProjectTable.length > 0) {
             mcdProjectTables.forEach(element => {
-                element.setAttribute('style', 'height: max-content');
+                element.style.cssText = 'height: fit-content; overflow-x: scroll; width: 100%;';
                 isFixed = true;
             });
             if (isFixed) {
                 messageHolder += '\nFixed MCD Project Tables';
-            };
-        };
+            }
+        }
     } catch (error) {
         console.log('MCD Project Tables Not Found.');
-    };
+    }
 
 
-
-
-    // Increases table height by 10px. Use with caution.
-    // const tableHeight = targetIFrame.document.querySelectorAll('div[id*=":AT1:_ATp:table"]');
-    // if (tableHeight) {
-    //     const currentHeight = tableHeight.offsetHeight; // Get current height
-    //     const newHeight = currentHeight + 10 + 'px'; // Add 10px to height with unit
-    //     tableHeight.style.height = newHeight; // Set the new height
-    //     tableHeight.forEach( element =>  element.style.cssText = newHeight);
-    // };
-
-    // Increase height of search results table by 10px USE WITH CAUTION
-
-
-    // Enforces UTF-8 formatting in the <head> tag
-    // const headFix = targetIFrame.contentWindow.document.querySelector('head');
-    // if (headFix) { 
-    //     const metaTag = targetIFrame.contentWindow.document.createElement('meta');
-    //     metaTag.httpEquiv = 'Content-Type';
-    //     metaTag.content = 'text/html; charset=UTF-8';
-    //     metaTag.style = "";
-    //     headFix.appendChild(metaTag);
-    // }
-
-
-
-    // Fixes tabs and white bar alignement for steps 1-3
-    // const selectedTab = targetIFrame.document.querySelectorAll('div[class="flat-tabs-item selected"][aria-selected="true"]')
-    // const navmenuContainer = targetIFrame.document.getElementById("navmenu-container");
-    // const whiteBar = targetIFrame.document.querySelector('div.flat-tabs-line-selected');
-
-    // // Remove child elements until a selected tab is found
-    // navmenuContainer.childNodes.forEach((child) => {
-    //     if (!child.classList.contains("flat-tabs-item") || child.getAttribute("aria-selected") !== "true") {
-    //         navmenuContainer.removeChild(child);
-    //     }
-    // });
-
-    // // Style adjustments
-    // if (navmenuContainer) {
-    //     navmenuContainer.style.left = "0px";
-    // }
-    // if (whiteBar) {
-    //     whiteBar.style.left = "0px";
-    // }
     if (isFixed) {
         return messageHolder;
     }
