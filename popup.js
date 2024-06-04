@@ -79,7 +79,6 @@ fixRun.addEventListener("click", async () => {
  * @todo Check: Crediting an Existing Transaction DHL for demo maybe.
  * @todo Fix: Approving an Invoice Adjustment - garbled text needs to be fixed.
  * @todo Fix: Viewing the project performance dashboard - headers and tables.
- * @todo Fix: Alert message with null value if nothing is fixed
  */
 function fixUp() {
 
@@ -141,29 +140,41 @@ function fixUp() {
     } catch (error) {
         console.log('Actions Button Not Found.');
     };
+    try {
+        // Save and close button
+        const saveAndCloseButtons = targetIFrame.document.querySelectorAll('a[aria-describedby*=":saveBtn"] > span');
+        if (saveAndCloseButtons.length > 0) {
+            saveAndCloseButtons.forEach(element => {
+                element.style.cssText = 'font-size: 12px; font-weight: bold; color: white;';
+                isFixed = true;
+            });
+            if (isFixed) {
+                messageHolder += '\nFixed Save and Close Button';
+            }
+        }
+    } catch (error) {
+        console.log('Save and Close Button Not Found.');
+    }
 
     try {
         // Save and close button
-        // Was working now it's not. Need to revist ASAP
-        const saveAndCloseButtons = targetIFrame.document.querySelector('span[class="xx6"]');
-        if (saveAndCloseButtons) {
-            saveAndCloseButtons.forEach(element => {
-                element.style.cssText = 'font-size: 12px; color: white; font-weight: bold;';
+        const saveAndCloseButtons2 = targetIFrame.document.querySelectorAll('a[accesskey="S"] > span');
+        if (saveAndCloseButtons2.length > 0) {
+            saveAndCloseButtons2.forEach(element => {
+                element.style.cssText = 'font-size: 12px; font-weight: bold; color: white;';
                 isFixed = true;
-                if (isFixed) {
-                    messageHolder += '\nFixed Save and Close Button';
-                };
             });
-        };
-
+            if (isFixed) {
+                messageHolder += '\nFixed Save and Close Button';
+            }
+        }
     } catch (error) {
         console.log('Save and Close Button Not Found.');
-    };
-
+    }
     try {
         // Save and close button (Depreciated but still in DHL tutorials)
         // Was working now it's not. Need to revist ASAP
-        const saveAndCloseButtonsDHL = targetIFrame.document.querySelectorAll('span[class="xtb"]').checkVisibility();
+        const saveAndCloseButtonsDHL = targetIFrame.document.querySelectorAll('a[class="xtb"]').checkVisibility();
         if (saveAndCloseButtonsDHL.length > 0) {
             saveAndCloseButtonsDHL.forEach(element => {
                 element.style.cssText = 'font-size: 12px; font-weight: bold;';
@@ -245,7 +256,7 @@ function fixUp() {
             setupAndMaintenceDropDown.setAttribute('style', 'width: 348px;');
             isFixed = true;
             if (isFixed) {
-                messageHolder += '\nFixed Setup and Maintence Drop Down';
+                messageHolder += '\nFixed Setup and Maintence Drop Down Guide Image';
             };
         }
     } catch (error) {
@@ -304,7 +315,7 @@ function fixUp() {
             mcdActionsButton.setAttribute('style', 'font-size: 12px; font-weight: bold;');
             isFixed = true;
             if (isFixed) {
-                messageHolder += '\nFixed MCD Actions Button';
+                messageHolder += '\nFixed Button Text Formatting';
             }
         };
     } catch (error) {
@@ -343,7 +354,7 @@ function fixUp() {
 
     try {
         // MCD Hidden Headers
-        const mcDHiddenHeaders = targetIFrame.document.querySelector('div[id$=":SPpsl3::m"]');
+        const mcDHiddenHeaders = targetIFrame.document.querySelector('div[id$="ap1:SPpsl3::m"]');
         if (mcDHiddenHeaders) {
             mcDHiddenHeaders.style.overflowX = 'visible';
             mcDHiddenHeaders.style.height = '35px';
@@ -380,30 +391,70 @@ function fixUp() {
     try {
         // Removes need help widget
         const widgetButton = targetIFrame.document.querySelector('#letznav-frame-script');
-        for (const element of widgetButton) {
-            element.parentNode.removeChild(element);
-            isFixed = true;
-            if (isFixed) {
-                messageHolder += '\nRemoved Need Help Widget';
-            };
+        if (widgetButton) {
+            widgetButton.parentNode.removeChild(widgetButton);
+            messageHolder += '\nRemoved Need Help Widget';
         };
     } catch (error) {
         console.log('Need Help Widget Not Found.');
-    };
+    }
 
     try {
-        // MCD ERP Team Members table cutoff fix
-        const MCDTeamMembersTable = targetIFrame.document.querySelector('div[id$=":psl1::t"]');
-        if (MCDTeamMembersTable) {
-            MCDTeamMembersTable.style.overflow = 'visible';
+        const setupAndMaintenceWidth = targetIFrame.document.querySelector('div[id$=":soc2::popup-container"]');
+        if (setupAndMaintenceWidth) {
+            setupAndMaintenceWidth.style.width = '348px';
             isFixed = true;
             if (isFixed) {
-                messageHolder += '\nFixed MCD Team Members Table';
+                messageHolder += '\nFixed Setup and Maintence Width';
             };
         };
     } catch (error) {
-        console.log('MCD Team Members Table Not Found.');
+        console.log('Setup and Maintence Width Not Found.');
     };
+
+    try {
+        // Format the text of the span
+        const actionSpans = Array.from(targetIFrame.document.querySelectorAll('span')).filter(span => span.textContent === "Actions");
+        if (actionSpans.length > 0) {
+            actionSpans.forEach(span => {
+                span.style.cssText = 'font-size: 12px; font-weight: bold;';
+                isFixed = true;
+            });
+            if (isFixed) {
+                messageHolder += '\nFixed Scheduled Maintenance Actions Button Text';
+            }
+        };
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+
+    try {
+        // Removes need help widget
+        const needHelpWidget = targetIFrame.document.querySelector('.letznav-banner-container');
+        if (needHelpWidget) {
+            needHelpWidget.parentNode.removeChild(needHelpWidget);
+            isFixed = true;
+            if (isFixed) {
+                messageHolder += '\nRemoved Need Help Widget';
+            }
+        }
+    } catch (error) {
+        console.log('Need Help Widget Not Found.');
+    }
+
+    // try {
+    //     // MCD ERP Team Members table cutoff fix
+    //     const MCDTeamMembersTable = targetIFrame.document.querySelector('div[id$=":psl1::t"]');
+    //     if (MCDTeamMembersTable) {
+    //         MCDTeamMembersTable.style.overflow = 'visible';
+    //         isFixed = true;
+    //         if (isFixed) {
+    //             messageHolder += '\nFixed MCD Team Members Table';
+    //         };
+    //     };
+    // } catch (error) {
+    //     console.log('MCD Team Members Table Not Found.');
+    // };
 
     try {
         // Text wrap and elipses coded for header text (Works for MCD's need to revist)
@@ -419,37 +470,6 @@ function fixUp() {
     } catch (error) {
         console.log('Header Wrap Not Found.');
     };
-
-    // try {
-    //     // Removes "�" from elements
-    //     const allElements = targetIFrame.document.querySelectorAll('*');
-
-    //     allElements.forEach(element => {
-    //         if (element.textContent.includes("�")) {
-    //             element.textContent = element.textContent.replace(/�/g, '');
-    //         }
-    //     });
-    //     messageHolder += '\nRemoved "�" from elements';
-    // } catch (error) {
-    //     console.log('An error occurred while removing "�" from elements:', error);
-    // }
-
-    // try {
-    //     // Set height of results table to max-content
-    //     const resultsTable = targetIFrame.document.querySelectorAll('div[id*="_ATp:table"]');
-    //     if (resultsTable) {
-    //         resultsTable.forEach(element => {
-    //             element.setAttribute('style', 'height: fit-content');
-    //             isFixed = true;
-    //             if (isFixed) {
-    //                 messageHolder += '\nFixed Results table. TEST';
-    //             };
-    //         });
-
-    //     };
-    // } catch (error) {
-    //     console.log('Results Table Not Found.');
-    // };
 
 
     try {
@@ -469,7 +489,7 @@ function fixUp() {
 
     try {
         // MCD's Req tables
-        const mcdReqTables = targetIFrame.document.querySelectorAll('div[id*="AppTable:_ATp:"]');
+        const mcdReqTables = targetIFrame.document.querySelector('div[id*="AppTable:_ATp:"]');
         if (mcdReqTables.length > 0) {
             mcdReqTables.forEach(element => {
                 element.style.cssText = 'height: fit-content; overflow-x: scroll; width: 100%;';
@@ -499,6 +519,26 @@ function fixUp() {
         console.log('MCD Project Tables Not Found.');
     }
 
+    try {
+        // Fixes Funcational Areas Text
+        const functionalAreasDiv = targetIFrame.document.querySelector('div[title="Functional Areas"]');
+        if (functionalAreasDiv) {
+            // Select all child tables of the div
+            const childTables = functionalAreasDiv.querySelectorAll('table');
+            if (childTables.length > 0) {
+                childTables.forEach(table => {
+                    table.style.cssText = 'font-size: 13px; color: #0080d3;'
+                    table.style.fontFamily = 'Helvetica';
+                    isFixed = true;
+                });
+                if (isFixed) {
+                    messageHolder += '\nFixed Functional Areas Text';
+                }
+            }
+        }
+    } catch (error) {
+        console.log('An error occurred:', error);
+    }
 
     if (isFixed) {
         return messageHolder;
